@@ -1,0 +1,13 @@
+.active-title {
+    color: white;
+    background: #b0b3bc;
+    border-radius: 10px;
+}
+
+.active-title:hover {
+    background: #5D87FF;
+}
+
+.active-title a {
+    color: white !important;
+}

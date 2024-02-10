@@ -1,0 +1,22 @@
+.left-side-bar-item{
+    margin-left: 10px;
+    text-decoration: none;
+    font-size: 18px !important;
+    color: #4a5363 !important;
+    overflow: auto;
+}
+
+.fa-solid {
+    font-size: 18px;
+}
+
+.nav-small-cap {
+    padding: 1rem;
+    margin: auto 0;
+}
+
+.nav-small-cap:hover {
+    transition: ease-in 0.3s;
+    background: #5d87ff;
+    border-radius: 10px;
+}

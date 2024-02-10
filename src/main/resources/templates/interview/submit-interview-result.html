@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>New Interview Schedule</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script
+            src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/interview/view-interview-detail.css}">
+    <link rel="stylesheet" th:href="@{/css/simplebar.css}">
+    <link rel="stylesheet" th:href="@{/css/common/side-bar.css}">
+</head>
+
+<body>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <th:block th:insert="common/common"></th:block>
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <!--  Header Start -->
+        <header class="app-header">
+            <div>
+                <nav class="navbar navbar-expand-lg navbar-light d-flex justify-content-between">
+                    <div>
+                        <span id="title" class="h1">Interview</span>
+                    </div>
+                    <th:block th:insert="common/logout"></th:block>
+                </nav>
+            </div>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a th:href="${breadCrumbList.getUrl()}">
+                        <span th:text="${breadCrumbList.getName()}"></span>
+                    </a>
+                </li>
+                <li th:if="${breadCrumbSubmit}" class="breadcrumb-item">
+                    <a>
+                        <span th:text="${breadCrumbSubmit.getName()}"></span>
+                    </a>
+                </li>
+            </ol>
+        </header>
+        <!--  Header End -->
+        <!-- CONTENT START -->
+        <div class="container-fluid">
+            <form method="post" class="d-flex justify-content-between mt-7" th:action="@{/interview/submit/{id}(id=${interviewSubmit.id})}" th:object="${interviewSubmit}">
+                <div class="col-md-6 d-flex justify-content-center">
+                    <div class="col-md-9">
+                        <div>
+                            <span class="h5">Schedule title</span>
+                            <span class="rent-space-data" th:text="${interviewSubmit.scheduleTitle}"></span>
+                            <input type="hidden" class="form-control mb-2" th:field="*{scheduleTitle}" readonly>
+                        </div>
+
+                        <div class="mt-4">
+                            <span class="h5">Candidate name </span>
+                            <span class="rent-space-data" th:text="${interviewSubmit.getCandidates().fullName}"></span>
+                            <input type="hidden" class="form-control mb-2" th:field="*{candidates}"  readonly>
+                        </div>
+
+                        <div class="mt-4 mb-3">
+                            <span class="h5">Schedule time</span>
+                            <span class="rent-space-data" th:text="${interviewSubmit.getInterviewDate()}"></span>
+                            <input type="hidden" class="form-control mb-2" th:field="*{interviewDate}" readonly>
+                            <div class="row space-time">
+                                <div class="col space-time-second">
+                                    <span>From</span>
+                                    <span class="rent-space-data" th:text="${interviewSubmit.startTime}"></span>
+                                    <input th:field="*{startTime}" type="hidden" class="form-control mb-2" readonly>
+                                </div>
+                                <div class="col">
+                                    <span>To <span class="text-danger">*</span> </span>
+                                    <span class="rent-space-data" th:text="${interviewSubmit.endTime}"></span>
+                                    <input th:field="*{endTime}" type="hidden" class="form-control mb-2" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <span class="h5">Notes </span>
+                        <br>
+                        <textarea class="form-control" name="" id="" cols="30" rows="10"
+                                  placeholder="Type a schedule note" th:field="*{notes}" readonly></textarea>
+                        <br>
+
+                    </div>
+
+                </div>
+                <div class="col-md-6 d-flex justify-content-center">
+                    <div class="col-md-9">
+                        <div>
+                            <span class="h5">Jobs </span>
+                            <span class="rent-space-data" th:text="${interviewSubmit.getJobs().title}"></span>
+                            <input type="hidden" class="form-control mb-2" th:field="*{jobs}" readonly>
+                        </div>
+
+                        <div class="mt-4">
+                            <span class="h5">Interviewer </span>
+                            <span class="rent-space-data" th:each="inter:${interviewerSet}" th:text="${inter}"> </span>
+
+                        </div>
+                        <div class="mt-4">
+                            <span class="h5">Location</span>
+                            <span class="rent-space-data" th:text="${interviewSubmit.location}"></span>
+                            <input type="hidden" class="form-control mb-2" th:field="*{location}" readonly>
+                        </div>
+
+                        <div class="mt-4">
+                            <span class="h5">Recruiter owner </span>
+                            <span class="rent-space-data" th:text="${interviewSubmit.getRecruiters().recruiterName}"></span>
+                            <input type="hidden" class="form-control mb-2" th:field="*{recruiters}" readonly>
+                        </div>
+                        <a href="">Assign me</a>
+                        <br>
+                        <div class="mt-4">
+                            <span class="h5">Meeting ID </span>
+                            <span class="rent-space-data" th:text="${interviewSubmit.meetingId}"></span>
+                            <input type="hidden" class="form-control mb-2" th:field="*{meetingId}" readonly><a href=""></a>
+                        </div>
+                        <div class="mt-4">
+                            <div class="row">
+                                <div class="col ">
+                                    <span class="h5">Result </span>
+                                </div>
+                                <div class="col">
+                                    <select  class="form-select mb-2" name="result">
+                                        <option th:each="result : ${resultList}"
+                                                th:text="${result.name()}"
+                                                th:value="${result.name()}"
+                                                th:selected="${interviewSubmit.getResult().name()==result.name()}">
+
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="mt-4">
+                            <span class="h5">Status </span>
+                            <span class="rent-space-data" th:text="${interviewSubmit.status}"></span>
+                            <input type="hidden" class="form-control mb-2" th:field="*{status}" readonly>
+                        </div>
+
+                    </div>
+                </div>
+        </div>
+        <div class="d-flex justify-content-center gap-4">
+            <button class="btn btn-primary mb-2" type="submit">Submit Result</button>
+            <a class="btn btn-warning mb-2" th:href="@{/interview/list}">Cancel</a>
+        </div>
+        </form>
+    </div>
+</div>
+</div>
+<!-- CONTENT END -->
+<!--</div>-->
+<script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/js/multi-select-tag.js"></script>
+<script>
+    new MultiSelectTag('interviewer');
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

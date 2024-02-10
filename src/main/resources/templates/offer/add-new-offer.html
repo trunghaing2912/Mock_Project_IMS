@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>New Offer</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script
+            src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/offer/add-new-offer.css}">
+    <link rel="stylesheet" th:href="@{/css/simplebar.css}">
+    <link rel="stylesheet" th:href="@{/css/common/side-bar.css}">
+</head>
+
+<body>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <th:block th:insert="common/common"></th:block>
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <!--  Header Start -->
+        <header class="app-header">
+            <div>
+                <nav class="navbar navbar-expand-lg navbar-light d-flex justify-content-between">
+                    <div>
+                        <span id="title" class="h1">Offer</span>
+                    </div>
+                    <th:block th:insert="common/logout"></th:block>
+                </nav>
+            </div>
+            <ol class="breadcrumb">
+                <li th:if="${breadCrumbList}" class="breadcrumb-item">
+                    <a th:href="${breadCrumbList.getUrl()}">
+                        <span th:text="${breadCrumbList.getName()}"></span>
+                    </a>
+                </li>
+                <li th:if="${breadCrumbAdd}" class="breadcrumb-item">
+                    <a>
+                        <span th:text="${breadCrumbAdd.getName()}"></span>
+                    </a>
+                </li>
+            </ol>
+        </header>
+        <!--  Header End -->
+        <!-- CONTENT START -->
+        <div class="container-fluid">
+            <form th:action="@{/offer/add}" class="d-flex justify-content-between" method="post" th:object="${offer}">
+                <div class="col-md-6 d-flex justify-content-center">
+                    <div class="col-md-9">
+                        <span class="h5">Candidate<span class="text-danger">*</span></span>
+                        <select name="" onchange="findInterviewsByCandidateId()" id="candidate" class="form-select mb-2" th:field="*{candidate}">
+                            <option value="">-- Select Candidate --</option>
+                            <option th:each="candidate : ${candidatesList}"
+                                    th:text="${candidate.getFullName()}"
+                                    th:value="${candidate.getId()}">
+                                Select a candidate
+                            </option>
+                        </select>
+                        <span class="sub-info">Email: </span><span id="candidateEmail"></span>
+                        <p class="text-danger" th:errors="*{candidate}"> message error</p>
+                        <br>
+                        <br>
+
+                        <span class="h5">Position<span class="text-danger">*</span></span>
+                        <select name="" id="position" class="form-select mb-2" th:field="*{position}">
+                            <option value="">-- Select Position --</option>
+                            <option th:each="position : ${positionsList}"
+                                    th:text="${position.getPositionName()}"
+                                    th:value="${position.getId()}">
+                                Select a position
+                            </option>
+                        </select>
+                        <p class="text-danger" th:errors="*{position}"> message error</p>
+                        <br>
+
+                        <span class="h5">Approver<span class="text-danger">*</span></span>
+                        <select name="" id="approver" class="form-select mb-2" th:field="*{approvedBy}">
+                            <option value="">-- Select Approver --</option>
+                            <option th:each="approver : ${approverList}"
+                                    th:text="${approver.getFullName()}"
+                                    th:value="${approver.getId()}">
+                                Select an approver
+                            </option>
+                        </select>
+                        <p class="text-danger" th:errors="*{approvedBy}"> message error</p>
+                        <br>
+
+                        <span class="h5">Interview info<span class="text-danger">*</span></span>
+                        <select onchange="findInterviewNotesAndInterviewer()" name="" id="interview" class="form-select mb-2" th:field="*{interviewInfo}">
+                            <option value="">-- Select Interview --</option>
+                            <option th:each="interview : ${interviewPassList}"
+                                    th:text="${interview.getScheduleTitle()}"
+                                    th:value="${interview.getId()}">
+                                Select an interview schedule title
+                            </option>
+                        </select>
+                        <span class="sub-info">Interviewer: </span><span id="interviewerList"></span>
+                        <p class="text-danger" th:errors="*{interviewInfo}"> message error</p>
+                        <br>
+                        <br>
+
+                        <div class="row">
+                            <span class="h5">Contract Period<span class="text-danger">*</span></span>
+                            <div class="col">
+                                <span>From <span class="text-danger">*</span></span>
+                                <input type="date" class="form-control mb-2" th:field="*{contractPeriodFrom}">
+
+                            </div>
+                            <div class="col">
+                                <span>To <span class="text-danger">*</span> </span>
+                                <input type="date" class="form-control mb-2" th:field="*{contractPeriodTo}">
+
+                            </div>
+                        </div>
+                        <p class="text-danger" th:errors="*{contractPeriodTo}"> message error</p>
+                        <br>
+
+                        <span class="h5"> Interview Notes</span>
+                        <br>
+                        <textarea readonly class="form-control" name="note" id="interviewNotes" cols="30" rows="10" placeholder="Type a schedule note" th:field="*{interviewNotes}"></textarea>
+                        <br>
+
+                    </div>
+
+                </div>
+                <div class="col-md-6 d-flex justify-content-center">
+                    <div class="col-md-9">
+                        <span class="h5">Contract Type <span class="text-danger">*</span></span>
+                        <select class="form-select mb-2" th:field="*{contractType}">
+                            <option value="">-- Select Contract Type --</option>
+                            <option th:each="contract : ${contractTypeList}"
+                                    th:text="${contract.name()}"
+                                    th:value="${contract.name()}">
+                                Select a contract type
+                            </option>
+                        </select>
+                        <p class="text-danger" th:errors="*{contractType}"> message error</p>
+                        <br>
+
+                        <span class="h5">Level<span class="text-danger">*</span></span>
+                        <select name="" id="level" class="form-select mb-2" th:field="*{level}">
+                            <option value="">-- Select Level --</option>
+                            <option th:each="level : ${levelsList}"
+                                    th:text="${level.getLevelName()}"
+                                    th:value="${level.getId()}">
+                                Select a contract type
+                            </option>
+                        </select>
+                        <p class="text-danger" th:errors="*{level}"> message error</p>
+                        <br>
+
+                        <span class="h5">Department<span class="text-danger">*</span></span>
+                        <select name="" id="department" class="form-select mb-2" th:field="*{department}">
+                            <option value="">-- Select Department --</option>
+                            <option th:each="department : ${departmentList}"
+                                    th:text="${department.getDepartmentName()}"
+                                    th:value="${department.getId()}">
+                                Select a department
+                            </option>
+                        </select>
+                        <p class="text-danger" th:errors="*{department}"> message error</p>
+                        <br>
+
+                        <span class="h5">Recruiter owner <span class="text-danger">*</span> </span>
+                        <select name="" id="recruiter" class="form-select mb-2" th:field="*{recruiterOwner}">
+                            <option value="">-- Select Recruiter --</option>
+                            <option th:each="recruiter : ${recruitersList}"
+                                    th:text="${recruiter.getRecruiterName()}"
+                                    th:value="${recruiter.getId()}">
+                                Select a recruiter
+                            </option>
+                        </select>
+                        <a href="#" th:if="${role}" onclick="assignMe()">Assign me</a>
+                        <span class="idCurrentUser" th:text="${idCurrentUser}" style="display: none"></span>
+                        <p class="text-danger" th:errors="*{recruiterOwner}"> message error</p>
+                        <br>
+                        <br>
+
+                        <span class="h5">Due Date <span class="text-danger">*</span></span>
+                        <input type="date" class="form-control mb-2" th:field="*{dueDate}">
+                        <p class="text-danger" th:errors="*{dueDate}"> message error</p>
+                        <br>
+                        <span class="h5">Basic Salary<span class="text-danger">*</span></span>
+                        <input type="number" class="form-control mb-2" placeholder="Type a salary" th:field="*{basicSalary}">
+                        <p class="text-danger" th:errors="*{basicSalary}"> message error</p>
+                        <br>
+                        <span class="h5"> Note</span>
+                        <br>
+                        <textarea class="form-control" name="" id="" cols="30" rows="10" placeholder="Type a offer note" th:field="*{note}"></textarea>
+                        <br>
+
+                    </div>
+                </div>
+        </div>
+        <div class="d-flex justify-content-center gap-4">
+            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+            <a th:href="@{/offer/list}" class="btn btn-warning mb-2" id="cancel" >Cancel</a>
+        </div>
+        </form>
+    </div>
+</div>
+</div>
+<!-- CONTENT END -->
+<!--</div>-->
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<script src="/js/offer/add-new-offer.js"></script>
+</body>
+
+</html>

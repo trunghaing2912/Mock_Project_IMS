@@ -1,0 +1,87 @@
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<nav class="navbar navbar-expand-lg navbar-light d-flex justify-content-end">
+    <div class="d-flex flex-column position-absolute" style="right: 90%">
+        <span class="h4" sec:authentication="principal.username"></span>
+        <span sec:authentication="principal.department"></span>
+    </div>
+    <div class="navbar-collapse justify-content-end px-0 position-relative">
+        <div class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+            <div class="nav-item dropdown">
+                <a class="nav-link nav-icon-hover" href="#" id="drop2" data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    <img th:if="${session.imgAvatar != 'off'}" id="ava" th:src="@{${'files/' + session.imgAvatar}}" alt="" width="35" height="35" class="rounded-circle">
+                    <img th:if="${session.imgAvatarNull eq 'on'}" src="" alt="" width="35" height="35" class="rounded-circle">
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
+                     aria-labelledby="drop2">
+                    <a th:href="@{/avatar}" class="d-flex align-items-center gap-2 dropdown-item">
+                        <p class="mb-0 fs-3">My Profile</p>
+                    </a>
+                    <a th:href="@{/user/change-password}" class="d-flex align-items-center gap-2 dropdown-item">
+                        <p class="mb-0 fs-3">Change Password</p>
+                    </a>
+                    <a th:href="@{/exit}"
+                       class="btn btn-outline-primary mx-3 mt-2 d-block logout">Logout</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</nav>
+<div class="modal fade text-center" id="confirmModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title text-center w-100 text-white" id="modal-title"></h5>
+                <span class="close" aria-hidden="true">&times;</span>
+            </div>
+
+            <div class="modal-body">
+                <p class="lead" id="confirmText"></p>
+            </div>
+
+            <div class="modal-footer d-flex justify-content-center">
+                <a id="yesBtn" class="btn btn-danger">Yes</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+
+            if (document.getElementById("ava") != null) {
+                let beforeUrl = document.getElementById("ava").src;
+
+                let indexStart = beforeUrl.indexOf("8080/");
+                let indexEnd = beforeUrl.indexOf("files");
+
+                let string1 = beforeUrl.substring(0, indexStart + 5);
+
+                let string2 = beforeUrl.substring(indexEnd);
+
+                let string3 = string1.concat(string2);
+
+                document.getElementById("ava").src = string3;
+            }
+
+            $(".logout").on("click", function(e) {
+                e.preventDefault();
+                let link = $(this);
+                let logoutURL = link.attr("href");
+                $("#modal-title").html("Logout confirmation")
+                $("#confirmText").html("Do you want to log out?");
+                $("#confirmModal").modal('show');
+
+                $('#yesBtn').on("click",function (){
+                    window.location.href=logoutURL;
+                })
+                $('.fade').removeClass('modal-backdrop')
+            });
+            $("#confirmModal .modal-footer .btn-secondary, #confirmModal .modal-header .close").on("click", function () {
+                $("#confirmModal").modal('hide');
+            });
+        });
+    </script>
+</div>

@@ -1,0 +1,158 @@
+<!doctype html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>View User Details</title>
+    <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/common/view-detail-entity-common.css}" />
+    <link rel="stylesheet" th:href="@{/css/user/view-user-detail.css}">
+    <link rel="stylesheet" th:href="@{/css/simplebar.css}">
+    <link rel="stylesheet" th:href="@{/css/common/side-bar.css}">
+</head>
+
+<body>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <th:block th:insert="common/common"></th:block>
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <!--  Header Start -->
+        <header class="app-header">
+            <div>
+                <nav class="navbar navbar-expand-lg navbar-light d-flex justify-content-between">
+                    <div>
+                        <span id="title" class="h1">User</span>
+                    </div>
+                    <th:block th:insert="common/logout"></th:block>
+                </nav>
+            </div>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a th:href="${breadCrumbList.getUrl()}">
+                        <span th:text="${breadCrumbList.getName()}"></span>
+                    </a>
+                </li>
+                <li th:if="${breadCrumbDetail}" class="breadcrumb-item">
+                    <a>
+                        <span th:text="${breadCrumbDetail.getName()}"></span>
+                    </a>
+                </li>
+            </ol>
+        </header>
+        <!--  Header End -->
+        <!-- CONTENT START -->
+        <div class="container-fluid grand-parent">
+            <form class="d-flex justify-content-between" action="" th:object="${userDetail}">
+                <div class="position-absolute" style="right: 25%;">
+                    <a class="btn btn-danger position-absolute" id="deactivate-btn"
+                       th:href="@{/user/deactivate/{id}(id=${userDetail.id})}" th:if="${active}" style="width: 150px">Deactivate
+                        User
+                    </a>
+                    <a class="btn btn-success position-absolute" id="activate-btn"
+                       th:href="@{/user/activate/{id}(id=${userDetail.id})}" th:if="${inactive}" style="width: 150px">Activate
+                        User
+                    </a>
+                </div>
+
+                <div class="col-md-6 d-flex justify-content-between">
+                    <div class="col-md-9">
+                        <div class="div-to-space"></div>
+                        <div class="div-to-space"></div>
+                        <div class="div-note">
+                            <span class="h5-sub">Full Name</span>
+                            <span th:text="${userDetail.fullName}" class="rent-space-data"></span>
+                        </div>
+
+                        <div class="div-to-space"></div>
+                        <div class="div-note">
+                            <span class="h5-sub">Date Of Birth</span>
+                            <span th:text="${userDetail.dateOfBirth}" class="rent-space-data"></span>
+                        </div>
+
+                        <div class="div-to-space"></div>
+                        <div class="div-note">
+                            <span class="h5-sub">Phone Number</span>
+                            <span th:text="${userDetail.phoneNumber}" class="rent-space-data"></span>
+                        </div>
+
+                        <div class="div-to-space"></div>
+                        <div class="div-note">
+                            <span class="h5-sub">Roles</span>
+                            <span th:each="role: ${userDetailsRole}" th:text="${role}" class="rent-space-data"></span>
+                        </div>
+
+                        <div class="div-to-space"></div>
+                        <div class="div-note">
+                            <span class="h5-sub">Status</span>
+                            <span th:text="${userDetail.status}" class="rent-space-data"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 d-flex justify-content-end">
+                    <div class="col-md-10">
+                        <div class="div-to-space"></div>
+                        <div class="div-to-space"></div>
+                        <div class="div-note">
+                            <span class="h5-sub">Email</span>
+                            <span th:text="${userDetail.email}" class="rent-space-data"></span>
+                        </div>
+
+                        <div class="div-to-space"></div>
+                        <div class="div-note">
+                            <span class="h5-sub">Address</span>
+                            <span th:text="${userDetail.address}" class="rent-space-data"></span>
+                        </div>
+
+                        <div class="div-to-space"></div>
+                        <div class="div-note">
+                            <span class="h5-sub">Gender</span>
+                            <span th:text="${userDetail.gender}" class="rent-space-data"></span>
+                        </div>
+
+                        <div class="div-to-space"></div>
+                        <div class="div-note">
+                            <span class="h5-sub">Department</span>
+                            <span th:text="${userDetail.department.departmentName}" class="rent-space-data"></span>
+                        </div>
+
+                        <div class="div-to-space"></div>
+                        <div class="div-note">
+                            <span class="h5-sub">Note</span>
+                            <span th:text="${userDetail.note}" class="rent-space-data"></span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="back">
+                <div>
+                    <a th:href="@{/user/edit/{id}(id=${userDetail.id}, prevPage=${prevPage})}" class="btn btn-info mb-2">Edit</a>
+                    <a th:href="@{/user/list}" class="btn btn-warning mb-2">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- CONTENT END -->
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/js/multi-select-tag.js"></script>
+<script>
+
+</script>
+</body>
+
+</html>

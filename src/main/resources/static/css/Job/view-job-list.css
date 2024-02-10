@@ -1,0 +1,177 @@
+body {
+
+}
+
+.container-fluid {
+    height: 100vh;
+    position: relative;
+}
+
+.creatMessage {
+    margin-left: 10px;
+    color: #59b914;
+    font-size: 1.5rem;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.table-parent {
+    height: 70%;
+    overflow: auto;
+}
+
+.table-body {
+    position: relative;
+}
+
+.not-found {
+    position: absolute;
+    top: 20px;
+    font-size: 1.3rem;
+    color: #d39134;;
+}
+
+li.active {
+    background: #5D87FF;
+    color: white !important;
+}
+
+#search-input-parent {
+    width: 50%;
+}
+
+#searchInput {
+    width: 100%;
+}
+
+.action-parent a {
+    margin-right: 10px;
+}
+
+.action-role a {
+    padding: 3px;
+}
+
+ul.pagination-parent {
+    position: absolute;
+    width: 60%;
+    bottom: 50px;
+    display: flex;
+}
+
+li.prev-button,
+li.next-button {
+    width: 30px;
+    height: 30px;
+    margin-right: 7px;
+    color: #5D87FF;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer
+}
+
+li.next-button {
+    margin-left: 7px;
+}
+*{
+    padding: 0;
+    margin: 0 ;
+    box-sizing: border-box;
+}
+.modal-header .close {
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.modal-header .close:hover{
+    color: black;
+}
+
+.import-job {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+}
+
+.background-import {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(53 53 53 / 70%);
+    z-index: 0;
+    animation: my-animation 0.1s linear;
+}
+
+@keyframes my-animation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.form-import {
+    padding: 20px;
+    background: white;
+    z-index: 1;
+    border-radius: 10px;
+}
+
+.form-import label {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    color: #626060;
+}
+
+.form-import input {
+    margin-bottom: 20px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.form-import .import-submit,
+.form-import .import-cancel {
+    max-width: 105px;
+    padding: 7px 30px;
+    border-radius: 7px;
+    font-size: 1rem;
+    color: white;
+}
+
+.form-import .import-submit:hover,
+.form-import .import-cancel:hover {
+    opacity: 0.8;
+}
+
+.form-import .import-submit {
+    background: #49BEFF;
+    border: 1px solid #49BEFF;
+}
+
+.form-import .import-cancel {
+    background: orange;
+    border: 1px solid orange;
+}
+
+.click-here {
+    padding: 5px 7px;
+    background: orange;
+    border-radius: 10px;
+    color: white;
+}
+
+.click-here:hover {
+    color: white;
+    opacity: 0.8;
+}

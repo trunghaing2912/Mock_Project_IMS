@@ -1,0 +1,55 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!-- Sidebar Start -->
+<aside class="left-sidebar">
+    <!-- Sidebar scroll-->
+    <div>
+        <div class="brand-logo d-flex align-items-center justify-content-between">
+            <a th:href="@{/}" class="text-nowrap logo-img">
+                <img th:src="@{/img/logo.jpg}" width="180" alt="" />
+            </a>
+            <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+                <i class="ti ti-x fs-8"></i>
+            </div>
+        </div>
+        <!-- Sidebar navigation-->
+        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+            <ul id="sidebarnav" class="left-side-bar">
+                <li id="home-title" class="nav-small-cap ">
+                    <i class="fa-solid fa-house"></i>
+                    <a th:href="@{/}" class="left-side-bar-item"> Home</a>
+                </li>
+                <br>
+                <li id="candidate-title" class="nav-small-cap">
+                    <i class="fa-solid fa-users"></i>
+                    <a th:href="@{/candidate/list}" class="left-side-bar-item">Candidate</a>
+                </li>
+                <br>
+                <li id="job-title" class="nav-small-cap left-sidebar-list-item">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <a href="#" class="left-side-bar-item" th:href="@{/job/list}">Job</a>
+                </li>
+                <br>
+                <li id="interview-title" class="nav-small-cap left-sidebar-list-item">
+                    <i class="fa-solid fa-comment"></i>
+                    <a th:href="@{/interview/list}" class="left-side-bar-item">Interview</a>
+                </li>
+                <br>
+                <li id="offer-title" class="nav-small-cap sidebar-list-item" sec:authorize="hasAnyRole('ADMIN','RECRUITER','MANAGER')">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <a th:href="@{/offer/list}" class="left-side-bar-item">Offer</a>
+                </li>
+                <br>
+                <li id="user-title" class="nav-small-cap sidebar-list-item" sec:authorize="hasRole('ADMIN')">
+                    <i class="fa-solid fa-user"></i>
+                    <a th:href="@{/user/list}" class="left-side-bar-item">User</a>
+                </li>
+                <br>
+            </ul>
+            <script src="/js/common/side-bar-common.js"></script>
+        </nav>
+        <!-- End Sidebar navigation -->
+    </div>
+    <!-- End Sidebar scroll-->
+</aside>
+<!--  Sidebar End -->

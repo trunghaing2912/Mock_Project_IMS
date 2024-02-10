@@ -1,0 +1,165 @@
+<!doctype html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Add new job</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script
+            src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/Job/addNewJob.css}">
+        <link rel="stylesheet" th:href="@{/css/simplebar.css}">
+    <link rel="stylesheet" th:href="@{/css/common/side-bar.css}">
+</head>
+
+<body>
+
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <th:block th:insert="common/common"></th:block>
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <!--  Header Start -->
+        <header class="app-header">
+            <div>
+                <nav class="navbar navbar-expand-lg navbar-light d-flex justify-content-between">
+                    <div>
+                        <span id="title" class="h1">Job</span>
+                    </div>
+                    <th:block th:insert="common/logout"></th:block>
+                </nav>
+            </div>
+            <ol class="breadcrumb">
+                <li th:if="${breadcrumbList}" class="breadcrumb-item">
+                    <a th:href="${breadcrumbList.getUrl()}">
+                        <span th:text="${breadcrumbList.getName()}"></span>
+                    </a>
+                </li>
+                <li th:if="${breadcrumbAdd}" class="breadcrumb-item">
+                    <a>
+                        <span th:text="${breadcrumbAdd.getName()}"></span>
+                    </a>
+                </li>
+            </ol>
+        </header>
+        <!--  Header End -->
+        <!-- CONTENT START -->
+        <div class="container-fluid">
+            <form class="d-flex justify-content-between" method="post" th:action="@{/job/add}" th:object="${newJob}">
+                <div class="col-md-6 d-flex justify-content-center">
+                    <div class="col-md-9">
+                        <span class="h5">Job title <span class="text-danger">*</span></span>
+                        <input type="text" th:field="*{title}" class="form-control mb-2" placeholder="Type a title...">
+                        <p class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
+                        <br>
+
+                        <span class="h5">Start Date <span class="text-danger">*</span></span>
+                        <input type="date" class="form-control mb-2" th:field="*{startDate}">
+                        <p class="text-danger" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></p>
+                        <br>
+
+                        <span class="h5">Salary range </span>
+                        <br>
+                        <span>From</span>
+                        <input th:field="*{minSalary}" type="number" class="form-control mb-2">
+                        <p class="text-danger" th:if="${#fields.hasErrors('minSalary')}" th:errors="*{minSalary}"></p>
+
+                        <span>To <span class="text-danger">*</span> </span>
+                        <input type="number" th:field="*{maxSalary}" class="form-control mb-2">
+                        <p class="text-danger" th:if="${#fields.hasErrors('maxSalary')}" th:errors="*{maxSalary}"></p>
+                        <br>
+
+                        <span class="h5">Working Address <span class="text-danger">*</span></span>
+                        <input type="text" th:field="*{workingAddress}" class="form-control mb-2" placeholder="Type an Address">
+                        <p class="text-danger" th:if="${#fields.hasErrors('workingAddress')}" th:errors="*{workingAddress}"></p>
+                        <br>
+
+                    </div>
+
+                </div>
+                <div class="col-md-6 d-flex justify-content-center">
+                    <div class="col-md-9">
+                        <span class="h5">Skills <span class="text-danger">*</span></span>
+                        <select class="form-select mb-2" id="skill" th:field="*{skillsSet}" multiple="multiple">
+                            <option th:each="skill: ${skillsList}" th:text="${skill.skillName}"
+                                    th:value="${skill.skillName}">
+                            </option>
+                        </select>
+                        <p class="text-danger" th:if="${#fields.hasErrors('skillsSet')}" th:errors="*{skillsSet}"></p>
+                        <br>
+
+                        <span class="h5">End Date <span class="text-danger">*</span></span>
+                        <input type="date" th:field="*{endDate}" class="form-control mb-2">
+                        <p class="text-danger" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}" ></p>
+                        <br>
+
+                        <div>
+                            <span class="h5">Benefits <span class="text-danger">*</span></span>
+                            <select class="form-select mb-2" id="benefit" th:field="*{benefitSet}" multiple="multiple">
+                                <option th:each="benefit: ${benefitList}" th:text="${benefit.benefitName}"
+                                        th:value="${benefit.benefitName}">
+                                </option>
+                            </select>
+                            <p class="text-danger" th:if="${#fields.hasErrors('benefitSet')}" th:errors="*{benefitSet}"></p>
+                        </div>
+                        <br>
+                        <br>
+                        <span class="h5">Level <span class="text-danger">*</span></span>
+                        <select class="form-select mb-2" th:field="*{levelsSet}" id="level" multiple="multiple">
+                            <option th:each="level: ${levelList}" th:text="${level.levelName}"
+                                    th:value="${level.levelName}">
+                            </option>
+                        </select>
+                        <p class="text-danger" th:if="${#fields.hasErrors('levelsSet')}" th:errors="*{levelsSet}"></p>
+                        <br>
+
+                        <span class="h5">Description</span>
+                        <textarea th:field="*{description}" cols="10" rows="5" class="form-control"
+                                  placeholder="Type Description"></textarea>
+
+                    </div>
+                </div>
+                </div>
+                <div class="d-flex justify-content-center gap-4">
+                    <button type="submit" class="btn btn-primary mb-2">Submit</button>
+                    <a class="btn btn-warning mb-2" th:href="@{/job/list}">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- CONTENT END -->
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/js/multi-select-tag.js"></script>
+<script>
+    new MultiSelectTag('level');
+    new MultiSelectTag('benefit');
+    new MultiSelectTag('skill');
+
+    setTimeout(function (){
+        var messages = document.getElementsByClassName("warning");
+        if (messages.length>0){
+            for (var i = 0; i < messages.length; i++) {
+                messages[i].style.display = 'none';
+            }
+        }
+    },5000)
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,146 @@
+<!doctype html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>View Profile User</title>
+    <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/common/view-detail-entity-common.css}" />
+    <link rel="stylesheet" th:href="@{/css/user/view-user-detail.css}">
+    <link rel="stylesheet" th:href="@{/css/simplebar.css}">
+    <link rel="stylesheet" th:href="@{/css/common/side-bar.css}">
+</head>
+
+<body>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <th:block th:insert="common/common"></th:block>
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <!--  Header Start -->
+        <header class="app-header">
+            <nav class="navbar navbar-expand-lg navbar-light d-flex justify-content-between">
+                <div>
+                    <span id="title" class="h1">Profile User</span>
+                </div>
+                <th:block th:insert="common/logout"></th:block>
+            </nav>
+        </header>
+        <!--  Header End -->
+        <!-- CONTENT START -->
+        <div class="container-fluid grand-parent">
+            <div class="position-relative d-flex justify-content-between">
+            </div>
+            <form th:action="@{/avatar}" method="post" enctype="multipart/form-data">
+                <div class="d-flex justify-content-between ">
+                    <div class="col-md-6 d-flex justify-content-between">
+                        <div class="col-md-9">
+                            <div class="div-to-space"></div>
+                            <div class="div-note">
+                                <span class="h5-sub">Full name <span class="text-danger"></span></span>
+                                <span class="rent-space-data" th:text="${userDetail.fullName}"></span>
+                            </div>
+
+                            <div class="div-to-space"></div>
+                            <div class="div-note">
+                                <span class="h5-sub">D.O.B <span class="text-danger"></span></span>
+                                <span class="rent-space-data" th:text="${userDetail.dateOfBirth}"></span>
+                            </div>
+
+                            <div class="div-to-space"></div>
+                            <div class="div-note">
+                                <span class="h5-sub">Phone number <span class="text-danger"></span></span>
+                                <span class="rent-space-data" th:text="${userDetail.phoneNumber}"></span>
+                            </div>
+
+                            <div class="div-to-space"></div>
+                            <div class="div-note">
+                                <span class="h5-sub">Roles</span>
+                                <span class="rent-space-data" th:each="role: ${userDetailsRole}" th:text="${role}"></span>
+                            </div>
+
+                            <div class="div-to-space"></div>
+                            <div class="div-note">
+                                <span class="h5-sub">Status</span>
+                                <span class="rent-space-data" th:text="${userDetail.status}"></span>
+                            </div>
+
+                            <div class="div-to-space"></div>
+                            <div class="div-note">
+                                <span class="h5-sub">Avatar</span>
+                                <input name="file" type="file" accept=".png, .jpg" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 d-flex justify-content-end">
+                        <div class="col-md-9">
+                            <div class="div-to-space"></div>
+                            <div class="div-note">
+                                <span class="h5-sub">Password</span>
+                                <a th:href="@{/user/change-password}" class="btn btn-light">Change Password</a>
+                            </div>
+
+                            <div class="div-to-space"></div>
+                            <div class="div-note">
+                                <span class="h5-sub">Email</span>
+                                <span class="rent-space-data" th:text="${userDetail.email}"></span>
+                            </div>
+
+                            <div class="div-to-space"></div>
+                            <div class="div-note">
+                                <span class="h5-sub">Address</span>
+                                <span class="rent-space-data" th:text="${userDetail.address}"></span>
+                            </div>
+
+                            <div class="div-to-space"></div>
+                            <div class="div-note">
+                                <span class="h5-sub">Gender</span>
+                                <span class="rent-space-data" th:text="${userDetail.gender}"></span>
+                            </div>
+
+                            <div class="div-to-space"></div>
+                            <div class="div-note">
+                                <span class="h5-sub">Department</span>
+                                <span class="rent-space-data" th:text="${userDetail.department.departmentName}"></span>
+                            </div>
+
+                            <div class="div-to-space"></div>
+                            <div class="div-note">
+                                <span class="h5-sub">Note</span>
+                                <span class="rent-space-data" th:text="${userDetail.note}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="back">
+                    <input type="submit" value="Update" class="btn btn-info">
+                    <a th:href="@{/user/list}" class="btn btn-warning">Back</a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <!-- CONTENT END -->
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/js/multi-select-tag.js"></script>
+<script>
+
+</script>
+</body>
+
+</html>

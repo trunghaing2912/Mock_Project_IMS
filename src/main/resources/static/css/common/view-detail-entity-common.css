@@ -1,0 +1,75 @@
+
+.h5-sub {
+    display: inline-block;
+    min-width: 170px;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+a:hover {
+    opacity: 0.8;
+}
+
+.btn {
+    min-width: 90px;
+}
+
+.ban-status-parent {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.ban-status {
+    margin-right: 200px;
+    padding: 5px 10px;
+    background: #f45b65;
+    border-radius: 8px;
+    color: white;
+}
+
+.ban-status:hover {
+    color: white;
+}
+
+.grand-parent {
+    position: relative;
+    min-height: 100vh;
+}
+
+.div-note {
+    display: flex;
+    align-items: flex-start;
+}
+
+.rent-space-data {
+    margin-left: 10px;
+    font-size: 1rem;
+}
+
+.attach {
+    margin-left: 10px;
+    font-size: 1.5rem;
+}
+
+.list {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 2px 5px;
+    background: #e4e4e4;
+    border-radius: 5px;
+
+}
+
+.back {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    margin-top: 30px;
+    text-align: center;
+    background: white;
+    padding: 20px 30% 30px 0;
+}
+
+.back a {
+    margin: 0 20px;
+}

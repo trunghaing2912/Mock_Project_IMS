@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>New Interview Schedule</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script
+            src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/interview/add-new-interview.css}">
+    <link rel="stylesheet" th:href="@{/css/simplebar.css}">
+    <link rel="stylesheet" th:href="@{/css/common/side-bar.css}">
+</head>
+
+<body>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <th:block th:insert="common/common"></th:block>
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <!--  Header Start -->
+        <header class="app-header">
+            <div>
+                <nav class="navbar navbar-expand-lg navbar-light d-flex justify-content-between">
+                    <div>
+                        <span id="title" class="h1">Interview</span>
+                    </div>
+                    <th:block th:insert="common/logout"></th:block>
+                </nav>
+            </div>
+            <ol class="breadcrumb">
+                <li th:if="${breadCrumbList}" class="breadcrumb-item">
+                    <a th:href="${breadCrumbList.getUrl()}">
+                        <span th:text="${breadCrumbList.getName()}"></span>
+                    </a>
+                </li>
+                <li th:if="${breadCrumbAdd}" class="breadcrumb-item">
+                    <a>
+                        <span th:text="${breadCrumbAdd.getName()}"></span>
+                    </a>
+                </li>
+            </ol>
+        </header>
+        <!--  Header End -->
+        <!-- CONTENT START -->
+        <div class="container-fluid">
+            <form class="d-flex justify-content-between" method="post" th:action="@{/interview/add}" th:object="${newInterview}">
+                <div class="col-md-6 d-flex justify-content-center">
+                    <div class="col-md-9">
+                        <span class="h5">Schedule title <span class="text-danger">*</span></span>
+                        <input th:field="*{scheduleTitle}" type="text" class="form-control mb-2" placeholder="Type a title...">
+                        <p class="text-danger" th:if="${#fields.hasErrors('scheduleTitle')}" th:errors="*{scheduleTitle}"></p>
+                        <br>
+
+                        <span class="h5">Candidate name <span class="text-danger">*</span></span>
+                        <select name=""  class="form-select mb-2" th:field="*{candidates}">
+                            <option th:each="candidate : ${candidatesList}"
+                                     th:value="${candidate.fullName}" th:text="${candidate.fullName}"></option>
+
+                        </select>
+                        <p class="text-danger" th:if="${#fields.hasErrors('candidates')}" th:errors="*{candidates}"></p>
+                        <br>
+
+                        <span class="h5">Schedule time <span class="text-danger">*</span></span>
+                        <input th:field="*{interviewDate}" type="date" class="form-control mb-2">
+                        <p class="text-danger" th:if="${#fields.hasErrors('interviewDate')}" th:errors="*{interviewDate}"></p>
+                        <div class="row">
+                            <div class="col">
+                                <span>From</span>
+                                <input th:field="*{startTime}" type="time" class="form-control mb-2">
+                                <p class="text-danger" th:if="${#fields.hasErrors('startTime')}" th:errors="*{startTime}"></p>
+                            </div>
+                            <div class="col">
+                                <span>To <span class="text-danger">*</span> </span>
+                                <input th:field="*{endTime}" type="time" class="form-control mb-2">
+                                <p class="text-danger" th:if="${#fields.hasErrors('endTime')}" th:errors="*{endTime}"></p>
+                            </div>
+
+                        </div>
+
+                        <span class="h5">Notes <span class="text-danger">*</span></span>
+                        <br>
+                        <textarea th:field="*{notes}" class="form-control" name="" id="" cols="30" rows="10" placeholder="Type a schedule note"></textarea>
+                        <br>
+
+                    </div>
+
+                </div>
+                <div class="col-md-6 d-flex justify-content-center">
+                    <div class="col-md-9">
+                        <span class="h5">Jobs <span class="text-danger">*</span></span>
+                        <select th:field="*{jobs}" class="form-select mb-2">
+                            <option th:each="job : ${jobsList}"
+                                    th:value="${job.title}" th:text="${job.title}"></option>
+
+                        </select>
+                        <p class="text-danger" th:if="${#fields.hasErrors('jobs')}" th:errors="*{jobs}"></p>
+                        <br>
+
+                        <div>
+                            <span class="h5">Interviewer <span class="text-danger">*</span></span>
+                            <select th:field="*{interviewers}" class="form-select mb-2" id="interviewer" multiple="multiple">
+                                <option th:each="interview: ${interviewerList}" th:text="${interview.interviewerName}"
+                                        th:value="${interview.interviewerName}"></option>
+
+                            </select>
+                            <p class="text-danger"  th:if="${#fields.hasErrors('interviewers')}" th:errors="*{interviewers}"></p>
+                        </div>
+                        <br>
+                        <br>
+                        <span class="h5">Location</span>
+                        <input th:field="*{location}" type="text" class="form-control mb-2" placeholder="Type a location">
+                        <p class="text-danger" th:if="${#fields.hasErrors('location')}" th:errors="*{location}"></p>
+                        <br>
+
+                        <span class="h5">Recruiter owner <span class="text-danger">*</span> </span>
+                        <select th:field="*{recruiters}" class="form-select mb-2" >
+                            <option th:each="recruiter: ${recruitersList}" th:text="${recruiter.recruiterName}"
+                                    th:value="${recruiter.id}"></option>
+
+                        </select>
+                        <a id="assign-me" href="#" th:data="${userLoginId}"
+                           sec:authorize="hasRole('RECRUITER')" >Assign me</a>
+                        <br>
+                        <br>
+                        <span class="h5">Meeting ID </span>
+                        <input th:field="*{meetingId}" type="text" class="form-control mb-2">
+                        <br>
+
+
+                    </div>
+                </div>
+        </div>
+        <div class="d-flex justify-content-center gap-4">
+            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+            <a class="btn btn-warning mb-2" th:href="@{/interview/list}" >Cancel</a>
+        </div>
+        </form>
+    </div>
+    </div>
+</div>
+<!-- CONTENT END -->
+<!--</div>-->
+
+<script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/js/multi-select-tag.js"></script>
+<script>
+    new MultiSelectTag('interviewer');
+    document.getElementById('assign-me').addEventListener("click", function (ev) {
+        ev.preventDefault();
+        var assignedRecruiter = this.getAttribute('data');
+        var recruiterSelect = document.getElementById('recruiters');
+
+        recruiterSelect.value=assignedRecruiter;
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

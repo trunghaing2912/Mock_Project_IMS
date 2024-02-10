@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Interview Schedule List</title>
+    <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script
+            src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/offer/view-offer-list.css}">
+    <link rel="stylesheet" th:href="@{/css/simplebar.css}">
+    <link rel="stylesheet" th:href="@{/css/common/side-bar.css}">
+</head>
+
+<body>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <th:block th:insert="common/common"></th:block>
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <!--  Header Start -->
+        <header class="app-header">
+            <div>
+                <nav class="navbar navbar-expand-lg navbar-light d-flex justify-content-between">
+                    <div>
+                        <span id="title" class="h1">Offer</span>
+                    </div>
+                    <th:block th:insert="common/logout"></th:block>
+                </nav>
+            </div>
+            <ol class="breadcrumb">
+                <li th:if="${breadCrumbList}" class="breadcrumb-item">
+                    <a>
+                        <span th:text="${breadCrumbList.getName()}"></span>
+                    </a>
+                </li>
+        </header>
+        <!--  Header End -->
+        <!-- CONTENT START -->
+        <div class="container-fluid">
+            <p th:if="${updatedSuccessOffer}" th:text="${updatedSuccessOffer}" class="text-success"></p>
+            <form action="#" method="post">
+                <div class="d-flex gap-2 form-row align-items-center w-60">
+                    <div id="search-input-parent" class="autocomplete">
+                        <input type="text" class="form-control mb-2" id="searchInput" placeholder="Keyword">
+                        <div class="autocomplete-items" id="autocomplete-list"></div>
+                    </div>
+                    <select class="form-select mb-2 w-60" id="searchSelection">
+                        <option value="" class="searchSelection">Department</option>
+                        <option class="searchSelection" th:each="department: ${departmentList}" th:value="${department.departmentName}" th:text="${department.departmentName}"></option>
+
+
+                    </select>
+                    <select class="form-select mb-2 w-60" id="statusSelection">
+                        <option value="" class="statusSelection">Status</option>
+                        <option th:each="status: ${statusList}" th:value="${status}" th:text="${status}" class="statusSelection"></option>
+                    </select>
+                    <button type="submit" class="btn btn-primary mb-2" onclick="search(event)">Search</button>
+                </div>
+            </form>
+            <div class="d-flex justify-content-end mt-2 mb-2 gap-2"
+                 sec:authorize="hasAnyRole('ADMIN','RECRUITER','MANAGER')">
+                <a th:href="@{/offer/add}">
+                    <button class="btn btn-secondary">Add new</button>
+                </a>
+                <a>
+                    <button class="btn btn-primary" onclick="showExport()" th:href="@{/offer/export-excel}">Export</button>
+                </a>
+            </div>
+            <div class="table-parent mt-3">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Candidate name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Approver</th>
+                        <th scope="col">Department</th>
+                        <th scope="col">Notes</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody class="table-body">
+
+
+                    </tbody>
+                </table>
+            </div>
+
+            <ul class="pagination-parent">
+                <li class="prev-button" onclick="prev(event)">Prev</li>
+                <div class="pagination">
+                    <li>1</li>
+                </div>
+                <li class="next-button" onclick="next(event)">Next</li>
+            </ul>
+
+            <div class="export-offer hidden modal-backdrop">
+                <div class="background-export" onclick="hiddenExport()"></div>
+                <form class="form-export" th:action="@{/offer/export-excel}" method="post">
+                    <label><b>Export Offer</b></label><br>
+                    <div class="d-flex gap-2">
+                        <span> From
+                            <input type="date" id="startDate" name="startDate" class="form-control">
+                        </span>
+
+                        <span> To
+                            <input type="date" id="endDate" name="endDate" class="form-control">
+                        </span>
+                    </div>
+
+                    <span class="d-flex justify-content-center">
+                        <input class="export-submit" type="submit" value="Submit">
+                        <input class="export-cancel" type="button" value="Cancel" onclick="hiddenExport()">
+                    </span>
+                </form>
+            </div>
+        </div>
+        <!-- CONTENT END -->
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</script>
+<script th:src="@{/js/offer/view-offer-list.js}"></script>
+
+</body>
+
+</html>

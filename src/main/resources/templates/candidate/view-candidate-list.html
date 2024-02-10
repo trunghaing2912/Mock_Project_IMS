@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Candidate List</title>
+    <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script
+            src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/candidate/view-candidate-list.css}">
+    <link rel="stylesheet" th:href="@{/css/simplebar.css}">
+    <link rel="stylesheet" th:href="@{/css/common/side-bar.css}">
+</head>
+
+<body>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <th:block th:insert="common/common"></th:block>
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <!--  Header Start -->
+        <header class="app-header">
+            <div>
+                <nav class="navbar navbar-expand-lg navbar-light d-flex justify-content-between">
+                    <div>
+                        <span id="title" class="h1">Candidate</span>
+                    </div>
+                    <th:block th:insert="common/logout"></th:block>
+                </nav>
+            </div>
+            <ol class="breadcrumb">
+                <li th:if="${breadCrumbList}" class="breadcrumb-item">
+                    <a>
+                        <span th:text="${breadCrumbList.getName()}"></span>
+                    </a>
+                </li>
+            </ol>
+        </header>
+        <!--  Header End -->
+        <!-- CONTENT START -->
+        <div class="container-fluid">
+            <form action="#" method="post">
+                <div class="d-flex gap-2 form-row align-items-center w-60">
+                    <div id="search-input-parent">
+                        <input type="text" class="form-control mb-2" id="searchInput" placeholder="Keyword">
+                    </div>
+                    <select class="form-select mb-2 w-60" id="searchSelection">
+                        <option value="">--Status--</option>
+                        <option value="Waiting for interview">Waiting for interview</option>
+                        <option value="Waiting for approval">Waiting for approval</option>
+                        <option value="Waiting for response">Waiting for response</option>
+                        <option value="Open">Open</option>
+                        <option value="Passed Interview">Passed Interview</option>
+                        <option value="Rejected Offer">Rejected Offer</option>
+                        <option value="Accepted offer">Accepted offer</option>
+                        <option value="Declined offer">Declined offer</option>
+                        <option value="Cancelled offer">Cancelled offer</option>
+                        <option value="Failed interview">Failed interview</option>
+                        <option value="Cancelled interview">Cancelled interview</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary mb-2" onclick="search(event)">Search</button>
+                </div>
+            </form>
+            <div class="d-flex justify-content-end mt-2 mb-2 gap-2" id="add-candidate"
+                 sec:authorize="hasAnyRole('ADMIN','RECRUITER','MANAGER')">
+                <a th:href="@{/candidate/add}">
+                    <button class="btn btn-secondary">Add new</button>
+                </a>
+            </div>
+            <div class="table-parent">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone No.</th>
+                        <th scope="col">Current Position</th>
+                        <th scope="col">Owner HR</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody class="table-body">
+
+                    </tbody>
+                </table>
+            </div>
+
+            <ul class="pagination-parent">
+                <li class="prev-button" onclick="prev(event)">Prev</li>
+                <div class="pagination">
+                    <li>data</li>
+                </div>
+                <li class="next-button" onclick="next(event)">Next</li>
+            </ul>
+
+        </div>
+        <div class="modal fade text-center" id="confirmModal">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title text-center w-100 text-white" id="modal-title"></h5>
+                        <span class="close" aria-hidden="true">&times;</span>
+                    </div>
+
+                    <div class="modal-body">
+                        <p class="lead" id="confirmText"></p>
+                    </div>
+
+                    <div class="modal-footer d-flex justify-content-center">
+                        <a id="yesBtn" class="btn btn-danger">Yes</a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- CONTENT END -->
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<script th:src="@{/js/candidates/view-candidate-list.js}">
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/ims_db
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    enabled: true
+    cache: false
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    defer-datasource-initialization: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  sql:
+    init:
+      mode: embedded
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+#  app:
+#    file:
+#      location: C:\Users\Admin\Desktop\CV
+
+#  mail:
+#    host: smtp.gmail.com
+#    username: java.dev.test04@gmail.com
+#    password: Hanoi@#2023
+#    port: 587
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
+

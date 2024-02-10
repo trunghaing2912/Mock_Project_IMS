@@ -1,0 +1,189 @@
+<!doctype html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Edit User Details</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/user/edit-user-detail.css}">
+    <link rel="stylesheet" th:href="@{/css/common/view-detail-entity-common.css}"/>
+    <link rel="stylesheet" th:href="@{/css/simplebar.css}">
+    <link rel="stylesheet" th:href="@{/css/common/side-bar.css}">
+</head>
+
+<body>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <th:block th:insert="common/common"></th:block>
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <!--  Header Start -->
+        <header class="app-header">
+            <div>
+                <nav class="navbar navbar-expand-lg navbar-light d-flex justify-content-between">
+                    <div>
+                        <span id="title" class="h1">User</span>
+                    </div>
+                    <th:block th:insert="common/logout"></th:block>
+                </nav>
+            </div>
+            <ol class="breadcrumb">
+                <li th:if="${breadCrumbList}" class="breadcrumb-item">
+                    <a th:href="${breadCrumbList.getUrl()}">
+                        <span th:text="${breadCrumbList.getName()}"></span>
+                    </a>
+                </li>
+                <li th:if="${breadCrumbDetail}" class="breadcrumb-item">
+                    <a th:href="${breadCrumbDetail.getUrl()} + ${getEditUser.id}">
+                        <span th:text="${breadCrumbDetail.getName()}"></span>
+                    </a>
+                </li>
+                <li th:if="${breadCrumbEdit}" class="breadcrumb-item">
+                    <a>
+                        <span th:text="${breadCrumbEdit.getName()}"></span>
+                    </a>
+                </li>
+            </ol>
+        </header>
+        <!--  Header End -->
+        <!-- CONTENT START -->
+        <div class="container-fluid">
+            <form method="post" th:action="@{/user/edit/{id}(id=${getEditUser.id}, prevPage=${prevPage})}" th:object="${getEditUser}">
+                <div class="d-flex justify-content-between form-parent">
+                    <div class="col-md-6 d-flex justify-content-center">
+                        <div class="col-md-9">
+                            <input type="hidden" th:field="*{id}" class="form-control mb-2">
+
+                            <span class="h5">Full name <span class="text-danger">*</span></span>
+                            <input type="text" class="form-control mb-2" placeholder="Type full name..."
+                                   th:field="*{fullName}">
+                            <p class="text-danger warning" th:if="${#fields.hasErrors('fullName')}"
+                               th:errors="*{fullName}">message error</p>
+                            <br>
+
+                            <span class="h5">D.O.B <span class="text-danger">*</span></span>
+                            <input type="date" class="form-control mb-2" placeholder="#" th:field="*{dateOfBirth}">
+                            <p class="text-danger warning" th:if="${#fields.hasErrors('dateOfBirth')}"
+                               th:errors="*{dateOfBirth}">message error</p>
+                            <br>
+
+                            <span class="h5">Phone number <span class="text-danger"></span></span>
+                            <input type="number" class="form-control mb-2" placeholder="Type a phone number..."
+                                   th:field="*{phoneNumber}">
+                            <p class="text-danger warning" th:if="${#fields.hasErrors('phoneNumber')}"
+                               th:errors="*{phoneNumber}">message error</p>
+                            <br>
+
+                            <div>
+                                <span class="h5">Roles <span class="text-danger">*</span></span>
+                                <select class="form-select mb-2" id="role" name="rolesSet">
+                                    <option th:each="r: ${getEditRolesSet}" th:text="${r}"
+                                            th:value="${r}"
+                                    ></option>
+                                </select>
+                                <p class="text-danger warning" th:if="${#fields.hasErrors('rolesSet')}"
+                                   th:errors="*{rolesSet}">message error</p>
+                            </div>
+                            <br>
+
+                            <div>
+                                <span class="h5">Position <span class="text-danger">*</span></span>
+                                <select class="form-select mb-2" id="position" name="position" th:field="*{position}">
+                                    <option th:each="p: ${getPositionList}" th:text="${p.positionName}"
+                                            th:value="${p.id}"
+                                    ></option>
+                                </select>
+                                <p class="text-danger warning" th:if="${#fields.hasErrors('position')}"
+                                   th:errors="*{position}">message error</p>
+                            </div>
+                            <br>
+
+                            <span class="h5">Status <span class="text-danger"></span></span>
+                            <input type="text" th:field="*{status}" readonly class="form-control mb-2">
+                            <br>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 d-flex justify-content-center">
+                        <div class="col-md-9">
+                            <span class="h5">Email <span class="text-danger">*</span></span>
+                            <input type="email" class="form-control mb-2" placeholder="Type a email..."
+                                   th:field="*{email}">
+                            <p class="text-danger warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+                                message error</p>
+                            <br>
+
+                            <span class="h5">Address <span class="text-danger"></span></span>
+                            <input type="text" class="form-control mb-2" placeholder="Type a address..."
+                                   th:field="*{address}">
+                            <br>
+
+                            <div>
+                                <span class="h5">Gender <span class="text-danger">*</span></span>
+                                <select class="form-select mb-2" id="gender" th:field="*{gender}">
+                                    <option th:each="gender : ${T(fa.training.fjb04.ims.enums.user.Gender).values()}"
+                                            th:value="${gender}" th:text="${gender}"></option>
+                                </select>
+                                <p class="text-danger warning" th:if="${#fields.hasErrors('gender')}"
+                                   th:errors="*{gender}">message error</p>
+                            </div>
+                            <br>
+
+                            <div>
+                                <span class="h5">Department <span class="text-danger">*</span></span>
+                                <select class="form-select mb-2" id="department" th:field="*{department}">
+                                    <option th:each="department: ${getEditDepartmentList}"
+                                            th:text="${department.departmentName}"
+                                            th:value="${department.id}"
+                                    ></option>
+                                </select>
+                                <p class="text-danger warning" th:if="${#fields.hasErrors('department')}"
+                                   th:errors="*{department}">message error</p>
+                            </div>
+                            <br>
+
+                            <span class="h5">Note</span>
+                            <textarea cols="10" rows="3" class="form-control" placeholder="Note something..."
+                                      th:field="*{note}">
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center gap-4">
+                    <button type="submit" class="btn btn-primary mb-2">Submit</button>
+                    <a class="btn btn-warning mb-2" id="cancel">Cancel</a>
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+</div>
+<!-- CONTENT END -->
+<!--</div>-->
+
+<script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/js/multi-select-tag.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<script>
+    document.getElementById('cancel').addEventListener('click', function (ev) {
+        ev.preventDefault();
+        window.history.back();
+    })
+</script>
+</body>
+
+</html>

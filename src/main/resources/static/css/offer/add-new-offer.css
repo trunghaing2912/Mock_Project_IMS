@@ -1,0 +1,9 @@
+.sub-info {
+    color: #af925b;
+}
+
+.interviewerName, #candidateEmail {
+    font-weight: bold;
+    margin: 0 3px;
+    color: #bc913f;
+}
